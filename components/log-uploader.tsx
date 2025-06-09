@@ -105,6 +105,28 @@ export default function LogUploader() {
     xhr.send(formData)
   }
 
+  const handleClearLogs = async () => {
+    try {
+      const response = await fetch('/api/logs/clear', {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to clear logs.')
+      }
+
+      toast.success('Logs cleared successfully.')
+      setFile(null)
+      setAnalysisResult(null)
+      setUploadStatus('idle')
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unknown error occurred.'
+      toast.error(errorMessage)
+    }
+  }
+
   return (
     <Card className="w-full max-w-xl">
       <CardHeader>
@@ -203,7 +225,7 @@ export default function LogUploader() {
           </div>
         )}
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex gap-2">
         <Button
           onClick={handleUpload}
           disabled={!file || uploadStatus === 'uploading'}
@@ -211,6 +233,15 @@ export default function LogUploader() {
         >
           {uploadStatus === 'uploading' ? 'Uploading...' : 'Parse Log File'}
         </Button>
+        {analysisResult && (
+          <Button
+            variant="destructive"
+            className="w-full"
+            onClick={handleClearLogs}
+          >
+            Clear Logs
+          </Button>
+        )}
       </CardFooter>
     </Card>
   )

@@ -40,9 +40,9 @@
   - [x] 4.1 Define a Drizzle schema in `lib/db/schema.ts` for a `logs` table, including `userId`, `totalRecords`, and a JSONB column for `anomalies`.
   - [x] 4.2 Configure Drizzle ORM to connect to the Neon PostgreSQL database.
   - [x] 4.3 In the `upload` API route, after successful parsing, insert the results into the database, associating them with the authenticated `userId`.
-- [ ] 5.0 Implement "Clear Logs" Functionality
-  - [ ] 5.1 Create the API Route Handler `app/api/logs/clear/route.ts`.
-  - [ ] 5.2 Protect the route with Clerk middleware to get the `userId`.
-  - [ ] 5.3 Implement a Drizzle query in `lib/db/queries.ts` to delete all log records associated with the `userId`.
-  - [ ] 5.4 Add a "Clear logs" `shadcn/ui` `<Button>` to the `log-uploader` component.
-  - [ ] 5.5 On click, this button will call the `/api/logs/clear` endpoint and clear the displayed results from the UI upon success.
+- [x] 5.0 Implement "Clear Logs" Functionality
+  - [x] 5.1 Create the API Route Handler at `app/api/logs/clear/route.ts`.
+  - [x] 5.2 Protect the route with Clerk middleware to get the `userId`.
+  - [x] 5.3 Implement a Drizzle query in `lib/db/queries.ts` to delete all log records associated with the `userId`.
+  - [x] 5.4 Add a "Clear logs" `shadcn/ui` `<Button>` to the `log-uploader` component.
+  - [x] 5.5 On click, this button will call the `/api/logs/clear` endpoint and clear the displayed results from the UI upon success.
