@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server'
 import { currentUser } from '@clerk/nextjs/server'
+import { parseZscalerLog } from '@/lib/parsers/zscaler'
 
 const MAX_FILE_SIZE_MB = 4
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
-const ALLOWED_MIME_TYPE = 'text/plain'
+const ALLOWED_MIME_TYPES = ['text/plain', 'text/csv'] // Zscaler logs can be .log (text/plain) or .txt
 
 export async function POST(request: Request) {
   const user = await currentUser()
@@ -29,18 +30,28 @@ export async function POST(request: Request) {
     )
   }
 
-  // Validate MIME type
-  if (file.type !== ALLOWED_MIME_TYPE) {
+  // Validate MIME type. Note: .log files might be sent as text/plain.
+  // We'll be more lenient here and rely on parser's ability to handle content.
+  if (
+    !ALLOWED_MIME_TYPES.includes(file.type) &&
+    !file.name.endsWith('.log') &&
+    !file.name.endsWith('.txt')
+  ) {
     return NextResponse.json(
-      { error: 'Invalid file type. Only text/plain files are allowed.' },
+      { error: 'Invalid file type. Only .log or .txt files are allowed.' },
       { status: 415 } // Unsupported Media Type
     )
   }
 
-  // console.log(file);
-
-  return NextResponse.json({
-    message: 'File validated successfully.',
-    userId,
-  })
+  try {
+    const fileContent = await file.text()
+    const analysisResult = parseZscalerLog(fileContent)
+    return NextResponse.json(analysisResult)
+  } catch (error) {
+    console.error('Error parsing file:', error)
+    return NextResponse.json(
+      { error: 'Failed to parse the uploaded file.' },
+      { status: 500 }
+    )
+  }
 }

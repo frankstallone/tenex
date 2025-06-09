@@ -22,20 +22,20 @@
   - [x] 1.3 Add server-side validation to reject files > 4 MB or not of type `text/plain`.
   - [x] 1.4 Protect the route using Clerk middleware and retrieve the `userId`.
   - [x] 1.5 Return structured JSON errors (e.g., `{ error: 'File too large' }`) on validation failure with a `400` status.
-- [ ] 2.0 Implement Frontend for File Upload with Progress
-  - [ ] 2.1 Create a client component `components/log-uploader.tsx`.
-  - [ ] 2.2 Add a styled drag-and-drop zone and a file input button.
-  - [ ] 2.3 Use the `shadcn/ui` `<Progress>` component to show file upload progress.
-  - [ ] 2.4 Use `shadcn/ui` Sonner to display success or error toasts from the API response.
-  - [ ] 2.5 Render the parsed log summary (`totalRecords`, `anomalies[]`) on success.
-  - [ ] 2.6 Use a `<details>` element to create a collapsible section for `malformedCount` and the list of malformed lines.
+- [x] 2.0 Implement Frontend for File Upload with Progress
+  - [x] 2.1 Create a client component `components/log-uploader.tsx`.
+  - [x] 2.2 Add a styled drag-and-drop zone and a file input button.
+  - [x] 2.3 Use the `shadcn/ui` `<Progress>` component to show file upload progress.
+  - [x] 2.4 Use `shadcn/ui` Sonner to display success or error toasts from the API response.
+  - [x] 2.5 Render the parsed log summary (`totalRecords`, `anomalies[]`) on success.
+  - [x] 2.6 Use a `<details>` element to create a collapsible section for `malformedCount` and the list of malformed lines.
 - [ ] 3.0 Implement Log Parsing and Anomaly Detection
-  - [ ] 3.1 Create `lib/parsers/zscaler.ts` to encapsulate parsing logic.
-  - [ ] 3.2 Implement a `parseZscalerLog` function that processes the file content.
+  - [x] 3.1 Create `lib/parsers/zscaler.ts` to encapsulate parsing logic.
+  - [x] 3.2 Implement a `parseZscalerLog` function that processes the file content.
   - [ ] 3.3 The function must correctly handle tab-separated values according to the Zscaler NSS-Web spec.
   - [ ] 3.4 Identify and collect lines with an incorrect number of columns (malformed lines).
   - [ ] 3.5 Integrate the existing anomaly detection rules (e.g., large downloads, blocked requests).
-  - [ ] 3.6 The `upload` API route will call this function and use its output for the JSON response and database insertion.
+  - [x] 3.6 The `upload` API route will call this function and use its output for the JSON response and database insertion.
 - [ ] 4.0 Set Up Database and Store Parsed Logs
   - [ ] 4.1 Define a Drizzle schema in `lib/db/schema.ts` for a `logs` table, including `userId`, `totalRecords`, and a JSONB column for `anomalies`.
   - [ ] 4.2 Configure Drizzle ORM to connect to the Neon PostgreSQL database.
