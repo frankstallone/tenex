@@ -36,10 +36,10 @@
   - [x] 3.4 Identify and collect lines with an incorrect number of columns (malformed lines).
   - [x] 3.5 Integrate the existing anomaly detection rules (e.g., large downloads, blocked requests).
   - [x] 3.6 The `upload` API route will call this function and use its output for the JSON response and database insertion.
-- [ ] 4.0 Set Up Database and Store Parsed Logs
-  - [ ] 4.1 Define a Drizzle schema in `lib/db/schema.ts` for a `logs` table, including `userId`, `totalRecords`, and a JSONB column for `anomalies`.
-  - [ ] 4.2 Configure Drizzle ORM to connect to the Neon PostgreSQL database.
-  - [ ] 4.3 In the `upload` API route, after successful parsing, insert the results into the database, associating them with the authenticated `userId`.
+- [x] 4.0 Set Up Database and Store Parsed Logs
+  - [x] 4.1 Define a Drizzle schema in `lib/db/schema.ts` for a `logs` table, including `userId`, `totalRecords`, and a JSONB column for `anomalies`.
+  - [x] 4.2 Configure Drizzle ORM to connect to the Neon PostgreSQL database.
+  - [x] 4.3 In the `upload` API route, after successful parsing, insert the results into the database, associating them with the authenticated `userId`.
 - [ ] 5.0 Implement "Clear Logs" Functionality
   - [ ] 5.1 Create the API Route Handler `app/api/logs/clear/route.ts`.
   - [ ] 5.2 Protect the route with Clerk middleware to get the `userId`.

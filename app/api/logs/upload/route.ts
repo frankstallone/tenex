@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { currentUser } from '@clerk/nextjs/server'
 import { parseZscalerLog } from '@/lib/parsers/zscaler'
+import { db } from '@/lib/db'
+import { logs } from '@/lib/db/schema'
 
 const MAX_FILE_SIZE_MB = 4
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
@@ -46,9 +48,17 @@ export async function POST(request: Request) {
   try {
     const fileContent = await file.text()
     const analysisResult = parseZscalerLog(fileContent)
+
+    // Store results in the database
+    await db.insert(logs).values({
+      userId,
+      totalRecords: analysisResult.totalRecords,
+      anomalies: analysisResult.anomalies,
+    })
+
     return NextResponse.json(analysisResult)
   } catch (error) {
-    console.error('Error parsing file:', error)
+    console.error('Error processing file:', error)
     return NextResponse.json(
       { error: 'Failed to parse the uploaded file.' },
       { status: 500 }
