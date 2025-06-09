@@ -29,12 +29,12 @@
   - [x] 2.4 Use `shadcn/ui` Sonner to display success or error toasts from the API response.
   - [x] 2.5 Render the parsed log summary (`totalRecords`, `anomalies[]`) on success.
   - [x] 2.6 Use a `<details>` element to create a collapsible section for `malformedCount` and the list of malformed lines.
-- [ ] 3.0 Implement Log Parsing and Anomaly Detection
+- [x] 3.0 Implement Log Parsing and Anomaly Detection
   - [x] 3.1 Create `lib/parsers/zscaler.ts` to encapsulate parsing logic.
   - [x] 3.2 Implement a `parseZscalerLog` function that processes the file content.
-  - [ ] 3.3 The function must correctly handle tab-separated values according to the Zscaler NSS-Web spec.
-  - [ ] 3.4 Identify and collect lines with an incorrect number of columns (malformed lines).
-  - [ ] 3.5 Integrate the existing anomaly detection rules (e.g., large downloads, blocked requests).
+  - [x] 3.3 The function must correctly handle tab-separated values according to the Zscaler NSS-Web spec.
+  - [x] 3.4 Identify and collect lines with an incorrect number of columns (malformed lines).
+  - [x] 3.5 Integrate the existing anomaly detection rules (e.g., large downloads, blocked requests).
   - [x] 3.6 The `upload` API route will call this function and use its output for the JSON response and database insertion.
 - [ ] 4.0 Set Up Database and Store Parsed Logs
   - [ ] 4.1 Define a Drizzle schema in `lib/db/schema.ts` for a `logs` table, including `userId`, `totalRecords`, and a JSONB column for `anomalies`.
