@@ -16,12 +16,12 @@
 
 ## Tasks
 
-- [ ] 1.0 Setup Backend API for File Upload and Processing
-  - [ ] 1.1 Create a new Next.js API Route Handler at `app/api/logs/upload/route.ts`.
-  - [ ] 1.2 Use `request.formData()` to handle the file payload.
-  - [ ] 1.3 Add server-side validation to reject files > 4 MB or not of type `text/plain`.
-  - [ ] 1.4 Protect the route using Clerk middleware and retrieve the `userId`.
-  - [ ] 1.5 Return structured JSON errors (e.g., `{ error: 'File too large' }`) on validation failure with a `400` status.
+- [x] 1.0 Setup Backend API for File Upload and Processing
+  - [x] 1.1 Create a new Next.js API Route Handler at `app/api/logs/upload/route.ts`.
+  - [x] 1.2 Use `request.formData()` to handle the file payload.
+  - [x] 1.3 Add server-side validation to reject files > 4 MB or not of type `text/plain`.
+  - [x] 1.4 Protect the route using Clerk middleware and retrieve the `userId`.
+  - [x] 1.5 Return structured JSON errors (e.g., `{ error: 'File too large' }`) on validation failure with a `400` status.
 - [ ] 2.0 Implement Frontend for File Upload with Progress
   - [ ] 2.1 Create a client component `components/log-uploader.tsx`.
   - [ ] 2.2 Add a styled drag-and-drop zone and a file input button.
