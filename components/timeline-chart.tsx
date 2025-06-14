@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { AreaChart, Area, XAxis, CartesianGrid } from 'recharts'
 import {
   ChartContainer,
