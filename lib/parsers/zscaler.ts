@@ -3,6 +3,7 @@ export interface Anomaly {
   line: number
   details: string
   logEntry: Record<string, string>
+  severity?: 'High' | 'Medium' | 'Low'
 }
 
 export interface LogAnalysisResult {
@@ -78,6 +79,7 @@ export function parseZscalerLog(content: string): LogAnalysisResult {
         line: index + 1,
         details: `Access to ${logEntry.url} was blocked due to category: ${logEntry.urlcategory}`,
         logEntry,
+        severity: 'Medium',
       })
     }
 

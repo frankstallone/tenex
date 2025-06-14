@@ -13,6 +13,7 @@ import { Progress } from '@/components/ui/progress'
 import { LogAnalysisResult } from '@/lib/parsers/zscaler'
 import React, { useState, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
+import ResultsDashboard from './results-dashboard'
 
 type UploadStatus = 'idle' | 'uploading' | 'success' | 'error'
 
@@ -175,45 +176,8 @@ export default function LogUploader() {
           </div>
         )}
         {analysisResult && (
-          <div className="mt-6 p-4 border rounded-md bg-muted/50">
-            <h3 className="text-lg font-semibold mb-2">Analysis Results</h3>
-            <div className="grid grid-cols-3 gap-4 text-sm">
-              <p>
-                <strong>Total Records:</strong> {analysisResult.totalRecords}
-              </p>
-              <p>
-                <strong>Anomalies:</strong> {analysisResult.anomalies.length}
-              </p>
-              <p>
-                <strong>Malformed Lines:</strong>{' '}
-                {analysisResult.malformedCount}
-              </p>
-            </div>
-            {analysisResult.anomalies.length > 0 && (
-              <div className="mt-4">
-                <h4 className="font-semibold">Detected Anomalies:</h4>
-                <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
-                  {analysisResult.anomalies.map((anomaly, index) => (
-                    <li key={index}>
-                      <span className="font-semibold">{anomaly.rule}:</span>{' '}
-                      {anomaly.details} (Line: {anomaly.line})
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {analysisResult.malformedCount > 0 && (
-              <div className="mt-4">
-                <details>
-                  <summary className="cursor-pointer font-semibold text-sm">
-                    View {analysisResult.malformedCount} Malformed Lines
-                  </summary>
-                  <pre className="mt-2 p-2 bg-background rounded-md text-xs overflow-x-auto">
-                    <code>{analysisResult.malformedLines?.join('\n')}</code>
-                  </pre>
-                </details>
-              </div>
-            )}
+          <div className="mt-6">
+            <ResultsDashboard analysisResult={analysisResult} />
           </div>
         )}
         {uploadStatus === 'uploading' && (
