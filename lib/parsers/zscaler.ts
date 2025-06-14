@@ -73,13 +73,57 @@ export function parseZscalerLog(content: string): LogAnalysisResult {
 
     // --- Anomaly Detection (Task 3.5) ---
     // Rule: Flag any blocked requests.
-    if (logEntry.action && logEntry.action.toLowerCase().includes('blocked')) {
+    if (logEntry.action && logEntry.action.toUpperCase() === 'BLOCK') {
       anomalies.push({
         rule: 'Blocked Request',
         line: index + 1,
         details: `Access to ${logEntry.url} was blocked due to category: ${logEntry.urlcategory}`,
         logEntry,
         severity: 'Medium',
+      })
+    }
+
+    // Rule: Flag high-risk categories
+    const HIGH_RISK_CATEGORIES = [
+      'Spyware/Adware',
+      'Phishing',
+      'Malicious Sites',
+      'Botnets',
+      'Suspicious Destinations',
+    ]
+    if (
+      logEntry.urlcategory &&
+      HIGH_RISK_CATEGORIES.includes(logEntry.urlcategory)
+    ) {
+      anomalies.push({
+        rule: 'High-Risk Category',
+        line: index + 1,
+        details: `User ${logEntry.user} accessed ${logEntry.url} (Category: ${logEntry.urlcategory})`,
+        logEntry,
+        severity: 'High',
+      })
+    }
+
+    // Rule: Flag large downloads (over 50MB)
+    const responseSize = parseInt(logEntry.responsesize) || 0
+    if (responseSize > 50000000) {
+      anomalies.push({
+        rule: 'Large Download',
+        line: index + 1,
+        details: `User ${logEntry.user} downloaded ${responseSize} bytes from ${logEntry.url}`,
+        logEntry,
+        severity: 'Medium',
+      })
+    }
+
+    // Rule: Flag threat detections
+    if (logEntry.threatname && logEntry.threatname !== '-') {
+      anomalies.push({
+        rule: 'Threat Detected',
+        line: index + 1,
+        details: `Threat detected: ${logEntry.threatname} for user ${logEntry.user} accessing ${logEntry.url}`,
+        logEntry,
+        severity: 'High',
       })
     }
 
