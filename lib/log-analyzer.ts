@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { LogEntry, Anomaly } from './types'
 import { parseLogEntries } from './log-parser'
 import { runRuleBasedDetection } from './rule-detectors'
@@ -9,7 +8,6 @@ import { detectHighTrafficUsers } from './statistical-detectors'
  * @param logContent - The raw log file content as a string.
  * @returns An object with totalRecords, malformedCount, and anomalies.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function analyzeLogs(logContent: string): {
   totalRecords: number
   malformedCount: number
