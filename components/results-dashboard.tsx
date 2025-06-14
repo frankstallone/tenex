@@ -42,24 +42,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Cell,
-  AreaChart,
-  Area,
-} from 'recharts'
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from '@/components/ui/chart'
+import { type ChartConfig } from '@/components/ui/chart'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
+import TimelineChart from './timeline-chart'
+import AnomalyBreakdownChart from './anomaly-breakdown-chart'
 
 /**
  * Props for the ResultsDashboard component.
@@ -341,7 +328,7 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
             />
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+          <div className="flex flex-col gap-6">
             <Card className="lg:col-span-4">
               <CardHeader>
                 <CardTitle>Anomalies</CardTitle>
@@ -490,57 +477,15 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
               <CardHeader>
                 <CardTitle>Anomaly Breakdown</CardTitle>
               </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="h-[250px]">
-                  <ChartContainer config={chartConfig}>
-                    <BarChart data={chartData}>
-                      <CartesianGrid vertical={false} />
-                      <XAxis
-                        dataKey="name"
-                        tickLine={false}
-                        tickMargin={10}
-                        axisLine={false}
-                      />
-                      <YAxis />
-                      <ChartTooltip
-                        cursor={false}
-                        content={<ChartTooltipContent />}
-                      />
-                      <Bar
-                        dataKey="total"
-                        fill="var(--color-total)"
-                        radius={4}
-                      />
-                    </BarChart>
-                  </ChartContainer>
-                </div>
-                <div className="h-[250px]">
-                  <ChartContainer config={timelineChartConfig}>
-                    <AreaChart data={timeseriesData}>
-                      <CartesianGrid vertical={false} />
-                      <XAxis
-                        dataKey="time"
-                        tickLine={false}
-                        axisLine={false}
-                        tickMargin={8}
-                        tickFormatter={(value) =>
-                          new Date(value).toLocaleTimeString()
-                        }
-                      />
-                      <ChartTooltip
-                        cursor={false}
-                        content={<ChartTooltipContent />}
-                      />
-                      <Area
-                        dataKey="count"
-                        type="natural"
-                        fill="var(--color-count)"
-                        fillOpacity={0.4}
-                        stroke="var(--color-count)"
-                      />
-                    </AreaChart>
-                  </ChartContainer>
-                </div>
+              <CardContent className="flex flex-row gap-4">
+                <AnomalyBreakdownChart
+                  data={chartData}
+                  chartConfig={chartConfig}
+                />
+                <TimelineChart
+                  data={timeseriesData}
+                  chartConfig={timelineChartConfig}
+                />
               </CardContent>
             </Card>
           </div>

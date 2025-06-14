@@ -49,7 +49,7 @@ export default function Dashboard() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <div className="w-full max-w-4xl">
+      <div className="w-full max-w-8xl">
         <ResultsDashboard analysisResult={analysisResult} />
         <Button onClick={handleGoBack} className="mt-4">
           Upload Another File
