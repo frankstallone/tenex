@@ -21,7 +21,7 @@ const AnomalyBreakdownChart: React.FC<AnomalyBreakdownChartProps> = ({
   chartConfig,
 }) => {
   return (
-    <div>
+    <div className="min-h-[250px] flex-1">
       <ChartContainer config={chartConfig}>
         <BarChart data={data}>
           <CartesianGrid vertical={false} />
