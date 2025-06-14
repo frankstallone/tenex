@@ -10,10 +10,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { LogAnalysisResult } from '@/lib/parsers/zscaler'
+import { useRouter } from 'next/navigation'
 import React, { useState, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
-import ResultsDashboard from './results-dashboard'
 
 type UploadStatus = 'idle' | 'uploading' | 'success' | 'error'
 
@@ -23,8 +22,7 @@ export default function LogUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle')
-  const [analysisResult, setAnalysisResult] =
-    useState<LogAnalysisResult | null>(null)
+  const router = useRouter()
 
   const handleDragOver = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
@@ -50,7 +48,6 @@ export default function LogUploader() {
       setFile(droppedFile)
       setUploadStatus('idle')
       setUploadProgress(0)
-      setAnalysisResult(null)
     }
   }, [])
 
@@ -60,7 +57,6 @@ export default function LogUploader() {
       setFile(selectedFile)
       setUploadStatus('idle')
       setUploadProgress(0)
-      setAnalysisResult(null)
     }
   }
 
@@ -88,44 +84,22 @@ export default function LogUploader() {
         setUploadStatus('success')
         setUploadProgress(100)
         toast.success('File processed successfully.')
-        setAnalysisResult(response)
+        const resultId = `analysis-result-${Date.now()}`
+        sessionStorage.setItem(resultId, JSON.stringify(response))
+        router.push(`/dashboard?resultId=${resultId}`)
       } else {
         setUploadStatus('error')
         toast.error(response.error || 'An unknown error occurred.')
-        setAnalysisResult(null)
       }
     }
 
     xhr.onerror = () => {
       setUploadStatus('error')
       toast.error('A network error occurred. Please try again.')
-      setAnalysisResult(null)
     }
 
     xhr.open('POST', '/api/logs/upload', true)
     xhr.send(formData)
-  }
-
-  const handleClearLogs = async () => {
-    try {
-      const response = await fetch('/api/logs/clear', {
-        method: 'DELETE',
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to clear logs.')
-      }
-
-      toast.success('Logs cleared successfully.')
-      setFile(null)
-      setAnalysisResult(null)
-      setUploadStatus('idle')
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'An unknown error occurred.'
-      toast.error(errorMessage)
-    }
   }
 
   return (
@@ -175,11 +149,6 @@ export default function LogUploader() {
             <p>Size: {(file.size / 1024).toFixed(2)} KB</p>
           </div>
         )}
-        {analysisResult && (
-          <div className="mt-6">
-            <ResultsDashboard analysisResult={analysisResult} />
-          </div>
-        )}
         {uploadStatus === 'uploading' && (
           <div className="mt-4">
             <Progress value={uploadProgress} />
@@ -197,15 +166,6 @@ export default function LogUploader() {
         >
           {uploadStatus === 'uploading' ? 'Uploading...' : 'Parse Log File'}
         </Button>
-        {analysisResult && (
-          <Button
-            variant="destructive"
-            className="w-full"
-            onClick={handleClearLogs}
-          >
-            Clear Logs
-          </Button>
-        )}
       </CardFooter>
     </Card>
   )
