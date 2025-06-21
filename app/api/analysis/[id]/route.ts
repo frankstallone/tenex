@@ -4,13 +4,14 @@ import { currentUser } from '@clerk/nextjs/server'
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   const user = await currentUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  const params = await context.params
   const resultId = parseInt(params.id, 10)
   if (isNaN(resultId)) {
     return NextResponse.json({ error: 'Invalid result ID' }, { status: 400 })

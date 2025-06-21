@@ -2,6 +2,13 @@
 
 This is a [Next.js](https://nextjs.org) project that demonstrates a log analysis application for detecting security anomalies.
 
+## Prerequisites
+
+Before you begin, you will need to create accounts with the following services:
+
+- **[Clerk](https://clerk.com/):** For user authentication.
+- **[Neon](https://neon.tech/):** For the serverless Postgres database.
+
 ## Local Development Setup
 
 To get started with the project, follow these steps:
