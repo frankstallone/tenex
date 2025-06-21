@@ -84,9 +84,7 @@ export default function LogUploader() {
         setUploadStatus('success')
         setUploadProgress(100)
         toast.success('File processed successfully.')
-        const resultId = `analysis-result-${Date.now()}`
-        sessionStorage.setItem(resultId, JSON.stringify(response))
-        router.push(`/dashboard?resultId=${resultId}`)
+        router.push(`/dashboard?resultId=${response.resultId}`)
       } else {
         setUploadStatus('error')
         toast.error(response.error || 'An unknown error occurred.')

@@ -6,12 +6,13 @@ import {
   jsonb,
   timestamp,
 } from 'drizzle-orm/pg-core'
-import { Anomaly } from '../parsers/zscaler'
+import { Anomaly, LogAnalysisResult } from '../parsers/zscaler'
 
-export const logs = pgTable('logs', {
+export const analysisResults = pgTable('analysis_results', {
   id: serial('id').primaryKey(),
   userId: varchar('user_id', { length: 256 }).notNull(),
   totalRecords: integer('total_records').notNull(),
-  anomalies: jsonb('anomalies').$type<Anomaly[]>().default([]),
+  anomaliesSummary: jsonb('anomalies_summary').$type<Anomaly[]>().default([]),
+  analysisResult: jsonb('analysis_result').$type<LogAnalysisResult>().notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 })

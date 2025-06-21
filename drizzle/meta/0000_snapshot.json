@@ -1,11 +1,11 @@
 {
-  "id": "ce115234-1247-4cef-925d-fdf8d4193160",
+  "id": "c7ffc342-fd66-4013-b678-0ec46137a7a2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.logs": {
-      "name": "logs",
+    "public.analysis_results": {
+      "name": "analysis_results",
       "schema": "",
       "columns": {
         "id": {
@@ -26,12 +26,18 @@
           "primaryKey": false,
           "notNull": true
         },
-        "anomalies": {
-          "name": "anomalies",
+        "anomalies_summary": {
+          "name": "anomalies_summary",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false,
           "default": "'[]'::jsonb"
+        },
+        "analysis_result": {
+          "name": "analysis_result",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",

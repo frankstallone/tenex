@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { currentUser } from '@clerk/nextjs/server'
 import { parseZscalerLog } from '@/lib/parsers/zscaler'
 import { db } from '@/lib/db'
-import { logs } from '@/lib/db/schema'
+import { analysisResults } from '@/lib/db/schema'
 
 const MAX_FILE_SIZE_MB = 4
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
@@ -50,13 +50,19 @@ export async function POST(request: Request) {
     const analysisResult = parseZscalerLog(fileContent)
 
     // Store results in the database
-    await db.insert(logs).values({
-      userId,
-      totalRecords: analysisResult.totalRecords,
-      anomalies: analysisResult.anomalies,
-    })
+    const newAnalysis = await db
+      .insert(analysisResults)
+      .values({
+        userId,
+        totalRecords: analysisResult.totalRecords,
+        anomaliesSummary: analysisResult.anomalies.slice(0, 10), // Store a summary
+        analysisResult: analysisResult, // Store the full result
+      })
+      .returning({ id: analysisResults.id })
 
-    return NextResponse.json(analysisResult)
+    const resultId = newAnalysis[0].id
+
+    return NextResponse.json({ resultId })
   } catch (error) {
     console.error('Error processing file:', error)
     return NextResponse.json(

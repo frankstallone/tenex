@@ -1,4 +1,4 @@
-export interface Anomaly {
+export type Anomaly = {
   rule: string
   line: number
   details: string
@@ -6,7 +6,7 @@ export interface Anomaly {
   severity?: 'High' | 'Medium' | 'Low'
 }
 
-export interface LogAnalysisResult {
+export type LogAnalysisResult = {
   totalRecords: number
   anomalies: Anomaly[]
   malformedCount: number

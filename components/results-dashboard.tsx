@@ -185,9 +185,9 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   const uniqueRules = [...new Set(analysisResult.anomalies.map((a) => a.rule))]
 
   const severityColorMap: Record<NonNullable<Anomaly['severity']>, string> = {
-    High: 'bg-red-500 hover:bg-red-600',
-    Medium: 'bg-yellow-500 hover:bg-yellow-600',
-    Low: 'bg-green-500 hover:bg-green-600',
+    High: 'text-red-600 hover:text-red-700 bg-red-50 font-semibold',
+    Medium: 'text-yellow-600 hover:text-yellow-700 bg-yellow-50 font-semibold',
+    Low: 'text-green-600 hover:text-green-700 bg-green-50 font-semibold',
   }
 
   const timelineChartConfig = {
@@ -435,7 +435,7 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
                             <Badge
                               className={`${
                                 severityColorMap[anomaly.severity!]
-                              } text-white`}
+                              }`}
                             >
                               {anomaly.severity}
                             </Badge>
