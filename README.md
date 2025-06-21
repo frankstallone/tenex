@@ -1,26 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TENEX.AI Demo App
 
-## Getting Started
+This is a [Next.js](https://nextjs.org) project that demonstrates a log analysis application for detecting security anomalies.
 
-First, run the development server:
+## Local Development Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+To get started with the project, follow these steps:
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/your-repo/tenex.git
+    cd tenex
+    ```
+
+2.  **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+3.  **Set up environment variables:**
+    Create a `.env` file in the root of the project and add the following environment variables. You can get these from your Clerk and Neon accounts.
+
+    ```
+    # Clerk
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+    CLERK_SECRET_KEY=
+
+    # Neon Database
+    DATABASE_URL=
+    ```
+
+4.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Anomaly Detection Approach
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application uses a two-pronged approach to detect anomalies in log files:
 
-## Learn More
+### 1. Rule-Based Detection
+
+This method uses a predefined set of rules to identify known patterns of suspicious activity. The current rules include:
+
+- **Large Downloads:** Flags log entries where the downloaded bytes exceed a certain threshold (e.g., >10MB).
+- **Blocked Requests:** Identifies any requests that were blocked by a security policy.
+- **High-Risk Categories:** Flags access to web categories that are known to be high-risk (e.g., Phishing, Malware).
+
+### 2. Statistical Detection
+
+This method identifies outliers based on statistical analysis of the data.
+
+- **High Traffic Users:** Detects users whose number of requests is significantly higher than the average, indicating potentially anomalous behavior.
+
+These detectors are orchestrated by a central log analyzer that processes the log files and returns a list of all detected anomalies.
+
+## Learn More about Next.js
 
 To learn more about Next.js, take a look at the following resources:
 
