@@ -5,10 +5,11 @@ import {
   SignUpButton,
   UserButton,
 } from '@clerk/nextjs'
+import { Separator } from './ui/separator'
 
 export default function Navbar() {
   return (
-    <header className="flex justify-end items-center p-4 gap-4 h-16">
+    <header className="flex flex-col justify-center items-end p-4 gap-4 px-24">
       <SignedOut>
         <SignInButton />
         <SignUpButton />
@@ -16,6 +17,7 @@ export default function Navbar() {
       <SignedIn>
         <UserButton />
       </SignedIn>
+      <Separator orientation="horizontal" />
     </header>
   )
 }

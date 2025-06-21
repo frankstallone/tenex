@@ -2,7 +2,6 @@
 
 import {
   calculateSummaryMetrics,
-  transformMetricsForChart,
   transformAnomaliesForTimeseriesChart,
 } from '@/lib/analysis-helpers'
 import { Anomaly, LogAnalysisResult } from '@/lib/parsers/zscaler'
@@ -46,6 +45,7 @@ import { type ChartConfig } from '@/components/ui/chart'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
 import TimelineChart from './timeline-chart'
+import { Separator } from './ui/separator'
 
 /**
  * Props for the ResultsDashboard component.
@@ -74,7 +74,7 @@ const PAGE_SIZE = 20
  * Features:
  * - Summary metrics cards showing total records and anomaly counts by severity
  * - Interactive data table with sorting and filtering capabilities
- * - Visual representations of data through bar and area charts
+ * - Visual representations of data through area charts
  * - Responsive layout with loading and empty states
  * - Pagination for handling large datasets
  *
@@ -277,29 +277,53 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
         </Alert>
       ) : (
         <>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-row justify-between">
+              <div className="flex flex-col gap-4">
+                <h1 className="text-4xl font-bold">Operations dashboard</h1>
+                <p className="text-muted-foreground">
+                  Manage threats and ongoing cases.
+                </p>
+              </div>
+              <div className="flex flex-row gap-4 justify-center items-center">
+                <Badge className="text-green-800 bg-green-100 h-6">
+                  Systems fully operational
+                </Badge>
+                <Button>
+                  <ShieldAlert className="h-4 w-4" />
+                  View all recent priority cases
+                </Button>
+              </div>
+            </div>
+            <Separator orientation="horizontal" />
+          </div>
+          <div className="flex space-x-8 h-20 py-2">
             <SummaryCard
-              title="Total Records"
+              title="Volume"
               value={analysisResult.totalRecords}
               icon={FileText}
             />
+            <Separator orientation="vertical" className="h-full" />
             <SummaryCard
               title="Total Anomalies"
               value={analysisResult.anomalies.length}
               icon={AlertTriangle}
             />
+            <Separator orientation="vertical" />
             <SummaryCard
               title="High Severity"
               value={summaryMetrics.high}
               icon={ShieldAlert}
               valueClassName="text-red-500"
             />
+            <Separator orientation="vertical" />
             <SummaryCard
               title="Medium Severity"
               value={summaryMetrics.medium}
               icon={ShieldCheck}
               valueClassName="text-yellow-500"
             />
+            <Separator orientation="vertical" />
             <SummaryCard
               title="Low Severity"
               value={summaryMetrics.low}
@@ -308,162 +332,156 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
             />
           </div>
 
-          <div className="flex flex-col gap-6">
-            <Card className="lg:col-span-4">
-              <CardHeader>
-                <CardTitle>Anomalies</CardTitle>
-                <div className="flex items-center space-x-4 pt-4">
-                  {/* Severity Filter */}
-                  <Select
-                    value={filters.severity}
-                    onValueChange={(value) =>
-                      handleFilterChange('severity', value)
-                    }
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Filter by Severity" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Severities</SelectItem>
-                      <SelectItem value="High">High</SelectItem>
-                      <SelectItem value="Medium">Medium</SelectItem>
-                      <SelectItem value="Low">Low</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {/* Rule Filter */}
-                  <Select
-                    value={filters.rule}
-                    onValueChange={(value) => handleFilterChange('rule', value)}
-                  >
-                    <SelectTrigger className="w-[220px]">
-                      <SelectValue placeholder="Filter by Rule" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Rules</SelectItem>
-                      {uniqueRules.map((rule) => (
-                        <SelectItem key={rule} value={rule}>
-                          {rule}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>
-                        <Button
-                          variant="ghost"
-                          onClick={() => requestSort('severity')}
-                        >
-                          Severity
-                          <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </TableHead>
-                      <TableHead>
-                        <Button
-                          variant="ghost"
-                          onClick={() => requestSort('rule')}
-                        >
-                          Rule
-                          <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </TableHead>
-                      <TableHead>
-                        <Button
-                          variant="ghost"
-                          onClick={() => requestSort('details')}
-                        >
-                          Details
-                          <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </TableHead>
-                      <TableHead className="text-right">
-                        <Button
-                          variant="ghost"
-                          onClick={() => requestSort('line')}
-                        >
-                          Line
-                          <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </TableHead>
-                      <TableHead>
-                        <Button
-                          variant="ghost"
-                          onClick={() => requestSort('timestamp')}
-                        >
-                          Timestamp
-                          <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {paginatedAnomalies.map((anomaly, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Badge
-                            className={`${
-                              severityColorMap[anomaly.severity!]
-                            } text-white`}
-                          >
-                            {anomaly.severity}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>{anomaly.rule}</TableCell>
-                        <TableCell>{anomaly.details}</TableCell>
-                        <TableCell>{anomaly.logEntry.linenumber}</TableCell>
-                        <TableCell>{anomaly.logEntry.datetime}</TableCell>
-                      </TableRow>
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-row gap-4">
+              <TimelineChart
+                data={timeseriesData}
+                chartConfig={timelineChartConfig}
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center space-x-4 pt-4">
+                {/* Severity Filter */}
+                <Select
+                  value={filters.severity}
+                  onValueChange={(value) =>
+                    handleFilterChange('severity', value)
+                  }
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Filter by Severity" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Severities</SelectItem>
+                    <SelectItem value="High">High</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                    <SelectItem value="Low">Low</SelectItem>
+                  </SelectContent>
+                </Select>
+                {/* Rule Filter */}
+                <Select
+                  value={filters.rule}
+                  onValueChange={(value) => handleFilterChange('rule', value)}
+                >
+                  <SelectTrigger className="w-[220px]">
+                    <SelectValue placeholder="Filter by Rule" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Rules</SelectItem>
+                    {uniqueRules.map((rule) => (
+                      <SelectItem key={rule} value={rule}>
+                        {rule}
+                      </SelectItem>
                     ))}
-                  </TableBody>
-                </Table>
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-between py-4">
-                    <div className="text-sm text-muted-foreground">
-                      Showing page {currentPage} of {totalPages}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Card>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>
+                          <Button
+                            variant="ghost"
+                            onClick={() => requestSort('severity')}
+                          >
+                            Severity
+                            <ArrowUpDown className="ml-2 h-4 w-4" />
+                          </Button>
+                        </TableHead>
+                        <TableHead>
+                          <Button
+                            variant="ghost"
+                            onClick={() => requestSort('rule')}
+                          >
+                            Rule
+                            <ArrowUpDown className="ml-2 h-4 w-4" />
+                          </Button>
+                        </TableHead>
+                        <TableHead>
+                          <Button
+                            variant="ghost"
+                            onClick={() => requestSort('details')}
+                          >
+                            Details
+                            <ArrowUpDown className="ml-2 h-4 w-4" />
+                          </Button>
+                        </TableHead>
+                        <TableHead className="text-right">
+                          <Button
+                            variant="ghost"
+                            onClick={() => requestSort('line')}
+                          >
+                            Line
+                            <ArrowUpDown className="ml-2 h-4 w-4" />
+                          </Button>
+                        </TableHead>
+                        <TableHead>
+                          <Button
+                            variant="ghost"
+                            onClick={() => requestSort('timestamp')}
+                          >
+                            Timestamp
+                            <ArrowUpDown className="ml-2 h-4 w-4" />
+                          </Button>
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginatedAnomalies.map((anomaly, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Badge
+                              className={`${
+                                severityColorMap[anomaly.severity!]
+                              } text-white`}
+                            >
+                              {anomaly.severity}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>{anomaly.rule}</TableCell>
+                          <TableCell>{anomaly.details}</TableCell>
+                          <TableCell>{anomaly.logEntry.linenumber}</TableCell>
+                          <TableCell>{anomaly.logEntry.datetime}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  {totalPages > 1 && (
+                    <div className="flex items-center justify-between py-4">
+                      <div className="text-sm text-muted-foreground">
+                        Showing page {currentPage} of {totalPages}
+                      </div>
+                      <Pagination>
+                        <PaginationContent>
+                          <PaginationItem>
+                            <PaginationPrevious
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                handlePageChange(currentPage - 1)
+                              }}
+                              isActive={currentPage > 1}
+                            />
+                          </PaginationItem>
+                          <PaginationItem>
+                            <PaginationNext
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                handlePageChange(currentPage + 1)
+                              }}
+                              isActive={currentPage < totalPages}
+                            />
+                          </PaginationItem>
+                        </PaginationContent>
+                      </Pagination>
                     </div>
-                    <Pagination>
-                      <PaginationContent>
-                        <PaginationItem>
-                          <PaginationPrevious
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault()
-                              handlePageChange(currentPage - 1)
-                            }}
-                            isActive={currentPage > 1}
-                          />
-                        </PaginationItem>
-                        <PaginationItem>
-                          <PaginationNext
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault()
-                              handlePageChange(currentPage + 1)
-                            }}
-                            isActive={currentPage < totalPages}
-                          />
-                        </PaginationItem>
-                      </PaginationContent>
-                    </Pagination>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-            <Card className="lg:col-span-3">
-              <CardHeader>
-                <CardTitle>Anomaly Breakdown</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-row gap-4">
-                <TimelineChart
-                  data={timeseriesData}
-                  chartConfig={timelineChartConfig}
-                />
-              </CardContent>
-            </Card>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </>
       )}

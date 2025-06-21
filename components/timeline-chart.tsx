@@ -17,7 +17,7 @@ interface TimelineChartProps {
 const TimelineChart: React.FC<TimelineChartProps> = ({ data, chartConfig }) => {
   return (
     <div className="min-h-[250px] flex-1">
-      <ChartContainer config={chartConfig}>
+      <ChartContainer config={chartConfig} className="h-[250px] w-full">
         <AreaChart data={data}>
           <CartesianGrid vertical={false} />
           <XAxis

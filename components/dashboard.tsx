@@ -41,14 +41,14 @@ export default function Dashboard() {
 
   if (!analysisResult) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-24">
+      <div className="flex min-h-screen flex-col items-center justify-center pt-4 pb-24 px-24">
         <p>Loading analysis results...</p>
       </div>
     )
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
+    <main className="flex min-h-screen flex-col items-center justify-center pt-4 pb-24 px-24">
       <div className="w-full max-w-8xl">
         <ResultsDashboard analysisResult={analysisResult} />
         <Button onClick={handleGoBack} className="mt-4">
