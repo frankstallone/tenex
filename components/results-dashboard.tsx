@@ -46,7 +46,6 @@ import { type ChartConfig } from '@/components/ui/chart'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
 import TimelineChart from './timeline-chart'
-import AnomalyBreakdownChart from './anomaly-breakdown-chart'
 
 /**
  * Props for the ResultsDashboard component.
@@ -96,7 +95,6 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   isLoading = false,
 }) => {
   const summaryMetrics = calculateSummaryMetrics(analysisResult)
-  const chartData = transformMetricsForChart(summaryMetrics)
   const timeseriesData = transformAnomaliesForTimeseriesChart(
     analysisResult.anomalies
   )
@@ -191,24 +189,6 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
     Medium: 'bg-yellow-500 hover:bg-yellow-600',
     Low: 'bg-green-500 hover:bg-green-600',
   }
-
-  const chartConfig = {
-    total: {
-      label: 'Total',
-    },
-    High: {
-      label: 'High',
-      color: 'hsl(var(--chart-red))',
-    },
-    Medium: {
-      label: 'Medium',
-      color: 'hsl(var(--chart-yellow))',
-    },
-    Low: {
-      label: 'Low',
-      color: 'hsl(var(--chart-green))',
-    },
-  } satisfies ChartConfig
 
   const timelineChartConfig = {
     count: {
@@ -478,10 +458,6 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
                 <CardTitle>Anomaly Breakdown</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-row gap-4">
-                <AnomalyBreakdownChart
-                  data={chartData}
-                  chartConfig={chartConfig}
-                />
                 <TimelineChart
                   data={timeseriesData}
                   chartConfig={timelineChartConfig}
