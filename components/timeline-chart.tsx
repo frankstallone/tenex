@@ -19,6 +19,20 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ data, chartConfig }) => {
     <div className="min-h-[250px] flex-1">
       <ChartContainer config={chartConfig} className="h-[250px] w-full">
         <AreaChart data={data}>
+          <defs>
+            <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="5%"
+                stopColor="var(--color-count)"
+                stopOpacity={0.8}
+              />
+              <stop
+                offset="95%"
+                stopColor="var(--color-count)"
+                stopOpacity={0}
+              />
+            </linearGradient>
+          </defs>
           <CartesianGrid vertical={false} />
           <XAxis
             dataKey="time"
@@ -31,8 +45,7 @@ const TimelineChart: React.FC<TimelineChartProps> = ({ data, chartConfig }) => {
           <Area
             dataKey="count"
             type="natural"
-            fill="var(--color-count)"
-            fillOpacity={0.4}
+            fill="url(#colorGradient)"
             stroke="var(--color-count)"
           />
         </AreaChart>

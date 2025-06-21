@@ -193,7 +193,7 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   const timelineChartConfig = {
     count: {
       label: 'Anomalies',
-      color: 'hsl(var(--chart-1))',
+      color: 'var(--chart-4)',
     },
   } satisfies ChartConfig
 
@@ -322,13 +322,6 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
               value={summaryMetrics.medium}
               icon={ShieldCheck}
               valueClassName="text-yellow-500"
-            />
-            <Separator orientation="vertical" />
-            <SummaryCard
-              title="Low Severity"
-              value={summaryMetrics.low}
-              icon={ShieldQuestion}
-              valueClassName="text-green-500"
             />
           </div>
 
