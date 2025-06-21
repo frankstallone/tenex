@@ -11,7 +11,6 @@ import {
   FileText,
   ShieldAlert,
   ShieldCheck,
-  ShieldQuestion,
   Info,
 } from 'lucide-react'
 import React, { useMemo, useState } from 'react'
@@ -58,7 +57,7 @@ interface ResultsDashboardProps {
   isLoading?: boolean
 }
 
-type SortKey = 'severity' | 'rule' | 'details' | 'line' | 'timestamp'
+type SortKey = 'severity' | 'rule' | 'details' | 'timestamp'
 type SortDirection = 'asc' | 'desc'
 
 interface Filters {
@@ -235,7 +234,6 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
                     <Skeleton className="h-6 w-20" />
                     <Skeleton className="h-6 w-32" />
                     <Skeleton className="h-6 flex-1" />
-                    <Skeleton className="h-6 w-16" />
                     <Skeleton className="h-6 w-24" />
                   </div>
                 ))}
@@ -392,21 +390,12 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
                             <ArrowUpDown className="ml-2 h-4 w-4" />
                           </Button>
                         </TableHead>
-                        <TableHead>
+                        <TableHead className="max-w-sm">
                           <Button
                             variant="ghost"
                             onClick={() => requestSort('details')}
                           >
                             Details
-                            <ArrowUpDown className="ml-2 h-4 w-4" />
-                          </Button>
-                        </TableHead>
-                        <TableHead className="text-right">
-                          <Button
-                            variant="ghost"
-                            onClick={() => requestSort('line')}
-                          >
-                            Line
                             <ArrowUpDown className="ml-2 h-4 w-4" />
                           </Button>
                         </TableHead>
@@ -434,8 +423,9 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
                             </Badge>
                           </TableCell>
                           <TableCell>{anomaly.rule}</TableCell>
-                          <TableCell>{anomaly.details}</TableCell>
-                          <TableCell>{anomaly.logEntry.linenumber}</TableCell>
+                          <TableCell className="max-w-sm truncate">
+                            {anomaly.details}
+                          </TableCell>
                           <TableCell>{anomaly.logEntry.datetime}</TableCell>
                         </TableRow>
                       ))}
