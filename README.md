@@ -1,5 +1,7 @@
 # TENEX.AI Demo App
 
+![TENEX.AI Demo Screenshot](./public/screenshot.png)
+
 This is a [Next.js](https://nextjs.org) project that demonstrates a log analysis application for detecting security anomalies.
 
 ## Demo
