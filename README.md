@@ -6,7 +6,7 @@ This is a [Next.js](https://nextjs.org) project that demonstrates a log analysis
 
 The easiest way to see the demo:
 
-1. [TENEX.AI Demo App](https://tenex-ai-demo.vercel.app/)
+1. [TENEX.AI Demo App](https://tenex-eight.vercel.app/)
 2. Use GitHub or Google to sign in.
 3. Grab a sample log file to test with. Click on one of the links below, then right-click the "Raw" button and select "Save Link As..." to download the file.
    - [Small log file](./samples/data-small.log)
