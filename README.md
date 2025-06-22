@@ -2,6 +2,20 @@
 
 This is a [Next.js](https://nextjs.org) project that demonstrates a log analysis application for detecting security anomalies.
 
+## Demo
+
+The easiest way to see the demo:
+
+1. [TENEX.AI Demo App](https://tenex-ai-demo.vercel.app/)
+2. Use GitHub or Google to sign in.
+3. Grab a sample log file to test with. Click on one of the links below, then right-click the "Raw" button and select "Save Link As..." to download the file.
+   - [Small log file](./samples/data-small.log)
+   - [Medium log file](./samples/data-medium.log)
+4. Upload and Parse the log file.
+5. Wait for the analysis to complete.
+6. View the results.
+7. Upload a different log file using the Upload Another File button at the bottom of the operations dashboard.
+
 ## Prerequisites
 
 Before you begin, you will need to create accounts with the following services:
@@ -17,7 +31,6 @@ To get started with the project, follow these steps:
 
     ```bash
     git clone https://github.com/your-repo/tenex.git
-    cd tenex
     ```
 
 2.  **Install dependencies:**
