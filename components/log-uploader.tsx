@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { useRouter } from 'next/navigation'
-import React, { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, DragEvent, ChangeEvent } from 'react'
 import { toast } from 'sonner'
 
 type UploadStatus = 'idle' | 'uploading' | 'success' | 'error'
@@ -24,23 +24,17 @@ export default function LogUploader() {
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle')
   const router = useRouter()
 
-  const handleDragOver = useCallback(
-    (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault()
-      setIsDragOver(true)
-    },
-    []
-  )
+  const handleDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setIsDragOver(true)
+  }, [])
 
-  const handleDragLeave = useCallback(
-    (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault()
-      setIsDragOver(false)
-    },
-    []
-  )
+  const handleDragLeave = useCallback((event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setIsDragOver(false)
+  }, [])
 
-  const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = useCallback((event: DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     setIsDragOver(false)
     const droppedFile = event.dataTransfer.files?.[0]
@@ -51,7 +45,7 @@ export default function LogUploader() {
     }
   }, [])
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0]
     if (selectedFile) {
       setFile(selectedFile)

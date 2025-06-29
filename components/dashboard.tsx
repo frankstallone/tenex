@@ -3,7 +3,7 @@
 import ResultsDashboard from '@/components/results-dashboard'
 import { LogAnalysisResult } from '@/lib/parsers/zscaler'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from './ui/button'
 

@@ -13,7 +13,7 @@ import {
   ShieldCheck,
   Info,
 } from 'lucide-react'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { SummaryCard } from './summary-card'
 import {
   Table,
