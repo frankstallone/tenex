@@ -70,14 +70,6 @@ export function calculateSummaryMetrics(
 }
 
 /**
- * A placeholder function for now.
- * We will add more functions to this file later.
- */
-export function placeholderHelper(): boolean {
-  return true
-}
-
-/**
  * Transforms summary metrics into a format suitable for bar charts.
  *
  * This function takes the summary metrics and converts them into an array

@@ -2,7 +2,6 @@
 import { LogAnalysisResult, Anomaly } from './parsers/zscaler'
 import {
   calculateSummaryMetrics,
-  placeholderHelper,
   transformMetricsForChart,
   SummaryMetrics,
   transformAnomaliesForTimeseriesChart,
@@ -88,10 +87,6 @@ describe('analysis-helpers', () => {
       const metrics = calculateSummaryMetrics(mockResult)
       expect(metrics).toEqual({ high: 1, medium: 0, low: 0 })
     })
-  })
-
-  it('placeholderHelper should return true', () => {
-    expect(placeholderHelper()).toBe(true)
   })
 
   describe('transformMetricsForChart', () => {
