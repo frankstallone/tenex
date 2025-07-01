@@ -2,7 +2,6 @@
 import { LogAnalysisResult, Anomaly } from './parsers/zscaler'
 import {
   calculateSummaryMetrics,
-  SummaryMetrics,
   transformAnomaliesForTimeseriesChart,
 } from './analysis-helpers'
 
