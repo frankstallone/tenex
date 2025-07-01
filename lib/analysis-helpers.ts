@@ -70,34 +70,6 @@ export function calculateSummaryMetrics(
 }
 
 /**
- * Transforms summary metrics into a format suitable for bar charts.
- *
- * This function takes the summary metrics and converts them into an array
- * of data points that can be used with chart libraries like recharts.
- * The order of severity levels in the output is always High -> Medium -> Low.
- *
- * @param {SummaryMetrics} metrics - The summary metrics object
- * @returns {ChartData[]} An array of data points for the chart
- *
- * @example
- * ```ts
- * const chartData = transformMetricsForChart({ high: 1, medium: 2, low: 3 })
- * // Returns: [
- * //   { name: 'High', total: 1 },
- * //   { name: 'Medium', total: 2 },
- * //   { name: 'Low', total: 3 }
- * // ]
- * ```
- */
-export function transformMetricsForChart(metrics: SummaryMetrics): ChartData[] {
-  return [
-    { name: 'High', total: metrics.high },
-    { name: 'Medium', total: metrics.medium },
-    { name: 'Low', total: metrics.low },
-  ]
-}
-
-/**
  * Transforms anomaly data into a time-series format for area charts.
  *
  * This function processes an array of anomalies and groups them by minute,

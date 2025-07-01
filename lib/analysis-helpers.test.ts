@@ -2,7 +2,6 @@
 import { LogAnalysisResult, Anomaly } from './parsers/zscaler'
 import {
   calculateSummaryMetrics,
-  transformMetricsForChart,
   SummaryMetrics,
   transformAnomaliesForTimeseriesChart,
 } from './analysis-helpers'
@@ -86,34 +85,6 @@ describe('analysis-helpers', () => {
       }
       const metrics = calculateSummaryMetrics(mockResult)
       expect(metrics).toEqual({ high: 1, medium: 0, low: 0 })
-    })
-  })
-
-  describe('transformMetricsForChart', () => {
-    it('should transform metrics into the correct format for charts', () => {
-      const metrics: SummaryMetrics = { high: 1, medium: 2, low: 3 }
-      const chartData = transformMetricsForChart(metrics)
-      expect(chartData).toEqual([
-        { name: 'High', total: 1 },
-        { name: 'Medium', total: 2 },
-        { name: 'Low', total: 3 },
-      ])
-    })
-
-    it('should handle zero values correctly', () => {
-      const metrics: SummaryMetrics = { high: 0, medium: 0, low: 0 }
-      const chartData = transformMetricsForChart(metrics)
-      expect(chartData).toEqual([
-        { name: 'High', total: 0 },
-        { name: 'Medium', total: 0 },
-        { name: 'Low', total: 0 },
-      ])
-    })
-
-    it('should maintain consistent order regardless of values', () => {
-      const metrics: SummaryMetrics = { high: 0, medium: 5, low: 0 }
-      const chartData = transformMetricsForChart(metrics)
-      expect(chartData.map((d) => d.name)).toEqual(['High', 'Medium', 'Low'])
     })
   })
 
